@@ -319,17 +319,30 @@ has_principal_contrast <- function(m, eps) {
   return(result)
 }
 
-construct_phone_pairs <- function(ct_phones, c_fnames, t_fnames, c_sim, t_sim){
-  phone_labels <- as.character(ct_phones$label_std)
-  c_m <- feature_matrix(ct_phones, c_fnames)
-  c_pairs <- pairs_of(c_m, list(phone=phone_labels))
-  c_pairs_sim <- pairs_of(c_m, list(phone=phone_labels), c_sim, "c_sim")
-  c_pairs <- merge(c_pairs, c_pairs_sim)  
-  t_m <- feature_matrix(ct_phones, t_fnames)
-  t_pairs <- pairs_of(t_m, list(phone=phone_labels))
-  t_pairs_sim <- pairs_of(t_m, list(phone=phone_labels), t_sim, "t_sim")
-  t_pairs <- merge(t_pairs, t_pairs_sim)
-  result <- merge(t_pairs, c_pairs)
+reduce_phones <- function(phones, labels) {
+  result <- phones[as.character(phones$label_std) %in% labels,]
+  result$label_std <- as.character(result$label_std)
+  result <- result[order(result$label_std),]
+  return(result)
+}
+
+construct_phone_pairs <- function(phones, sim, sim_col_name="sim") {
+  phone_labels <- as.character(phones$label_std)
+  m <- feature_matrix(phones, feature_names(phones))
+  pairs <- pairs_of(m, list(phone=phone_labels))
+  pairs_sim <- pairs_of(m, list(phone=phone_labels), sim, sim_col_name)
+  result <- merge(pairs, pairs_sim)  
+  return(result)
+}
+
+construct_merged_phone_pairs <- function(c_phones, t_phones, c_sim, t_sim) {
+  merged_labels <- intersect(as.character(c_phones$label_std),
+                             as.character(t_phones$label_std))
+  c_phones <- reduce_phones(c_phones, merged_labels)
+  t_phones <- reduce_phones(t_phones, merged_labels)
+  c_pairs <- construct_phone_pairs(c_phones, c_sim, "c_sim")
+  t_pairs <- construct_phone_pairs(t_phones, t_sim, "t_sim")
+  result <- merge(c_pairs, t_pairs, by=c("phone_pair", "phone_1", "phone_2"))
   return(result)
 }
 
@@ -372,11 +385,15 @@ frep_pairs_same_diff <- function(ct_frep_pairs, class_features, same_thresh) {
 }
 
 phones_to_freps <- function(c_phones, t_phones, c_sim, t_sim, eps_other) {
-  ct_phones <- merge_phones(c_phones, t_phones)
-  ct_phone_pairs <- construct_phone_pairs(ct_phones,
-                                          feature_names(c_phones),
-                                          feature_names(t_phones),
-                                          c_sim, t_sim)  
+  merged_labels <- intersect(as.character(c_phones$label_std),
+                             as.character(t_phones$label_std))
+  c_phones <- reduce_phones(c_phones, merged_labels)
+  t_phones <- reduce_phones(t_phones, merged_labels)
+  c_phone_pairs <- construct_phone_pairs(c_phones, c_sim)  
+  t_phone_pairs <- construct_phone_pairs(t_phones, t_sim)  
+  ct_phone_pairs <- merge(c_phone_pairs, t_phone_pairs, by=c("phone_pair",
+                                                             "phone_1",
+                                                             "phone_2"))
   result <- construct_freps(ct_phone_pairs, feature_names(c_phones),
                             eps_other)
   return(result)

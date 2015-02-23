@@ -44,17 +44,16 @@ freps_list <- list()
 for (c_name in names(c_fns)) {
   c_phones <- cs[[c_name]]
   c_sim <- c_sim_fns[[c_name]]
-  c_fnames <- feature_names(c_phones)
   class_features <- c_class_features[[c_name]]
   eps_other <- c_eps_others[[c_name]]
   same_thresh <- c_same_threshs[[c_name]]
   for (t_name in names(t_fns)) {
     t_phones <- ts[[t_name]]
     t_sim <- t_sim_fns[[t_name]]
+    ct_phone_pairs <- construct_merged_phone_pairs(c_phones, t_phones, c_sim,
+                                                   t_sim)
+    c_fnames <- feature_names(c_phones)
     t_fnames <- feature_names(t_phones)
-    ct_phones <- merge_phones(c_phones, t_phones)
-    ct_phone_pairs <- construct_phone_pairs(ct_phones, c_fnames, t_fnames,
-                                            c_sim, t_sim)
     ct_freps <- construct_freps(ct_phone_pairs, c_fnames, eps_other)
     ct_frep_pairs <- construct_frep_pairs(ct_freps, c_fnames, t_fnames, c_sim,
                                           t_sim)

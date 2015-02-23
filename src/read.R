@@ -52,33 +52,6 @@ replace_features <- function(d, f) {
   return(d)
 }
 
-intersect_labels <- function(l) { # DEPRECATED
-  label_intersect <- intersect(as.character(l[[1]]$label_std),
-                               as.character(l[[2]]$label_std))
-  if (length(l) > 2) {
-    for (i in 3:length(l)) {
-      label_intersect <- intersect(label_intersect,
-                                   as.character(l[[i]]$label_std))
-    }
-  }
-  if (!is.null(names(l))) {
-    index <- names(l)
-  } else {
-    index <- 1:length(l)
-  }
-  for (n in index) {
-    l[[n]] <- l[[n]][as.character(l[[n]]$label_std) %in% label_intersect,]
-    l[[n]] <- l[[n]][order(l[[n]]$label_std),]
-    l[[n]]$label_std <- as.character(l[[n]]$label_std)
-  }
-  return(l)
-}
-
-merge_phones <- function(f1, f2) {
-  l <- intersect_labels(list(f1, f2))
-  return(merge(l[[1]], l[[2]], by="label_std"))
-}
-
 transform_features <- function(d, trans=NULL, normalize=NULL) {
   m <- feature_matrix(d)
   if (!is.null(trans)) {
