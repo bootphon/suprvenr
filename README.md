@@ -14,20 +14,12 @@ remove the line:
 
 if you do not have a font file in your Latex font path with this name.
 This is included so that phonetic characters display correctly. Path names
-<<<<<<< HEAD
 are relative to the **analysis** directory, so compile the document there.
-=======
-are relative to the *analysis* directory, so compile the document there.
->>>>>>> 24a1ddbd81902ba9886b80dc57ceac09909fb9fb
 
 Files
 =====
 
  *  **ICPhS2015\_Feature\_Explorations.pdf:** a copy of DSD15
 
-<<<<<<< HEAD
  *  **analysis/icphs_paper_figures.Rnw:** knitR document containing the code to
-=======
- *  *analysis/icphs_paper_figures.Rnw:* knitR document containing the code to
->>>>>>> 24a1ddbd81902ba9886b80dc57ceac09909fb9fb
     generate the figures and tables from DSD15
