@@ -18,7 +18,8 @@ source("../src/plotting.R")
 <<read-input, include=FALSE, cache=FALSE>>=
 source("../data/phone_mappings.R")
 phones <- read_features("../data/art_aireggxdist_means.csv",
-                          label_map_jm_art, NULL, "pca", "t")
+                        label_map=label_map_jm_art, 
+                        normalize="pca")
 sim <- abscossim
 @
 
@@ -26,7 +27,8 @@ sim <- abscossim
 freps <- construct_phone_pairs(phones, sim)
 freps_m <- feature_matrix(freps, feature_names(phones))
 frep_labels <- unique(as.character(freps$phone_pair))
-frep_pairs <- pairs_of(freps_m, list(frep=frep_labels), FUN=sim, result_names="sim")
+frep_pairs <- pairs_of(freps_m, list(frep=frep_labels), FUN=sim,
+                       result_names="sim")
 @
 
 

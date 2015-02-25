@@ -69,7 +69,8 @@ transform_features <- function(d, trans=NULL, normalize=NULL) {
   return(result)
 }
 
-read_features <- function(fn, label_map, trans_fn, normalize, feature_prefix) {
+read_features <- function(fn, label_map=NULL, trans_fn=NULL, normalize=NULL,
+                          feature_prefix=NULL) {
   d <- read.csv(fn)
   d <- prefix_feature_names_raw(d, feature_prefix)
   if (!is.null(label_map)) {
