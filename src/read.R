@@ -52,25 +52,37 @@ replace_features <- function(d, f) {
   return(d)
 }
 
-transform_features <- function(d, trans=NULL, normalize=NULL) {
+pca <- function(m, k=NULL) {
+  m <- prcomp(m, scale=TRUE)$x
+  if (!is.null(k)) {
+    dims <- min(k, ncol(m))
+    m <- m[,1:dims]
+  }
+  return(m)
+}
+
+transform_features <- function(d, trans=NULL, normalize=NULL, noise=NULL, ...){
   m <- feature_matrix(d)
   if (!is.null(trans)) {
     m <- feature_matrix(d) %*% trans
   }
   if (identical(normalize, "pca")) {
-    m <- prcomp(m, scale=TRUE)$x
+    m <- pca(m, ...)
   } else if (identical(normalize, "zscore")) {
     m_col_mean <- apply(m, 1, mean)
     m_col_sd <- apply(m, 1, sd)
     m <- sweep(m, 1, m_col_mean, "-")
     m <- sweep(m, 1, m_col_sd, "/")
   }
+  if (!is.null(noise)) {
+    m <- m + rnorm(prod(dim(m)), 0, noise)
+  }
   result <- replace_features(d, m)
   return(result)
 }
 
 read_features <- function(fn, label_map=NULL, trans_fn=NULL, normalize=NULL,
-                          feature_prefix=NULL) {
+                          feature_prefix=NULL, noise=NULL, ...) {
   d <- read.csv(fn)
   d <- prefix_feature_names_raw(d, feature_prefix)
   if (!is.null(label_map)) {
@@ -84,6 +96,7 @@ read_features <- function(fn, label_map=NULL, trans_fn=NULL, normalize=NULL,
   } else {
     trans_m <- NULL
   }
-  d <- transform_features(d, trans=trans_m, normalize=normalize)
+  d <- transform_features(d, trans=trans_m, normalize=normalize, noise=noise,
+                          ...)
   return(d)
 }

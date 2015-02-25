@@ -30,7 +30,8 @@ for (name in names(c_fns)) {
 ts <- list()
 for (name in names(t_fns)) {
   ts[[name]] <- read_features(t_fns[[name]], t_label_maps[[name]],
-                              t_trans_fns[[name]], t_normalize[[name]], "t")
+                              t_trans_fns[[name]], t_normalize[[name]], "t",
+                              k=3)
 }
 @
 
