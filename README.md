@@ -21,5 +21,10 @@ Files
 
  *  **ICPhS2015\_Feature\_Explorations.pdf:** a copy of DSD15
 
- *  **analysis/icphs_paper_figures.Rnw:** knitR document containing the code to
+ *  **analysis/icphs\_paper\_figures.Rnw:** knitR document containing the code to
     generate the figures and tables from DSD15
+ *  **analysis/visualize\_vector\_space.Rnw:** knitR document showing MDS of
+    vector spaces, with manually devised classes from the paper highlighted
+    (options "dev='cairo\_pdf'" and "font\_family='Times New Roman'" are
+    there to make the phonetic characters show up with ggplot, but may cause
+    problems on some systems)

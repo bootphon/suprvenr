@@ -107,6 +107,20 @@ abscossim <- function(x, y) {
   return(abs(dot/z))  
 }
 
+eucldist <- function(x, y, minus=F) {
+  x <- as.numeric(x)
+  y <- as.numeric(y)
+  result <- norm(x - y, type="2")
+  if (minus) {
+    result <- -result
+  }
+  return(result)
+}
+
+minuseucldist <- function(x, y) {
+  return(eucldist(x,y,minus=T))
+}
+
 classify_by_sim <- function(sim, class_levels=c("Different", "Same"),
                             decision_bound=0.5) {
   classes_bool <- sim >= decision_bound

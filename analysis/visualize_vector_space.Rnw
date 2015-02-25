@@ -1,0 +1,47 @@
+\documentclass{article}
+
+\usepackage{geometry}
+\geometry{letterpaper,margin=1in}
+\usepackage[english]{babel}
+\usepackage{fontspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setmainfont[Ligatures=TeX]{Times New Roman}
+
+
+<<setup, include=FALSE, cache=FALSE>>=
+library(ggplot2)
+source("../src/core.R")
+source("../src/read.R")
+source("../src/plotting.R")
+@
+
+<<read-input, include=FALSE, cache=FALSE>>=
+source("../data/phone_mappings.R")
+phones <- read_features("../data/art_aireggxdist_means.csv",
+                          label_map_jm_art, NULL, "pca", "t")
+sim <- abscossim
+@
+
+<<construct-phone-pairs,cache=FALSE,include=FALSE>>=
+freps <- construct_phone_pairs(phones, sim)
+freps_m <- feature_matrix(freps, feature_names(phones))
+frep_labels <- unique(as.character(freps$phone_pair))
+frep_pairs <- pairs_of(freps_m, list(frep=frep_labels), FUN=sim, result_names="sim")
+@
+
+
+\begin{document}
+
+\title{Visualize vector space from distances}
+\maketitle
+
+
+<<mds,echo=FALSE,dev='cairo_pdf',warning=FALSE>>=
+frep_distance_m <- sim_d_to_distance_m(frep_pairs, "frep_1", "frep_2", "sim",
+                                       function(sim) 1.-sim)
+print(mds_plot(frep_distance_m, label_to_class=pair_label_to_paper_classes,
+               font_family="Times New Roman"))
+@
+
+
+\end{document}
