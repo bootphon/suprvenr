@@ -17,8 +17,8 @@ source("../src/plotting.R")
 
 <<read-input, include=FALSE, cache=FALSE>>=
 source("../data/phone_mappings.R")
-phones <- read_features("../data/features_raw.csv",
-                        normalize="pca", k=12, noise=0.05)
+phones <- read_features("../data/art_plus_timit11.csv",
+                        normalize="pca")
 sim <- abscossim
 @
 
@@ -40,6 +40,7 @@ frep_pairs <- pairs_of(freps_m, list(frep=frep_labels), FUN=sim,
 
 <<mds,echo=FALSE,dev='cairo_pdf',warning=FALSE>>=
 frep_distance_m <- sim_d_to_distance_m(frep_pairs, "frep_1", "frep_2", "sim",
+#                                       function(dist) dist)
                                        function(sim) (1.-sim)*(1-(sim>=1)))
 print(mds_plot(frep_distance_m, label_to_class=pair_label_to_paper_classes,
                font_family="Times New Roman"))
