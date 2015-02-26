@@ -107,6 +107,22 @@ abscossim <- function(x, y) {
   return(abs(dot/z))  
 }
 
+abscosmagdist <- function(x, y) {
+  x <- as.numeric(x)
+  y <- as.numeric(y)
+  dot <- x %*% y
+  normx <- norm(x,type="2")
+  normy <- norm(y,type="2")
+  z <- normx*normy
+  abscos <- max(0, 1. - abs(dot/z))
+  absmagdiff <- abs(normx - normy)
+  return(abscos*absmagdiff)
+}
+
+minusabscosmagsim <- function(x, y) {
+  return(-abscosmagdist(x, y))
+}
+
 eucldist <- function(x, y, minus=F) {
   x <- as.numeric(x)
   y <- as.numeric(y)

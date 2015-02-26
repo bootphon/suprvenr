@@ -10,6 +10,7 @@ t_normalize <- list("pca", "pca", "pca", "pca", "pca")
 t_label_maps <- list(label_map_jm_art, label_map_timit, label_map_timit,
                      label_map_timit, NULL)
 t_sim_fns <- list(abscossim, abscossim, abscossim, abscossim, abscossim)
+#t_sim_fns <- list(minusabscosmagsim, minusabscosmagsim, minusabscosmagsim, minusabscosmagsim, minusabscosmagsim)
 
 tn <- c("Articulatory", "Acoustic",  "Phonotactic (NN)", "Phonotactic (SVD)",
         "Artic + Acoustic")
