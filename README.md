@@ -17,7 +17,7 @@ This is included so that phonetic characters display correctly. Path names
 are relative to the **analysis** directory, so compile the document there.
 
 Files
-=====
+-----
 
  *  **ICPhS2015\_Feature\_Explorations.pdf:** a copy of DSD15
 
