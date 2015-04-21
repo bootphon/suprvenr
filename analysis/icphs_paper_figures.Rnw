@@ -12,6 +12,7 @@
 library(ggplot2)
 library(xtable)
 source("../src/core.R")
+source("../src/auc.R")
 source("../src/read.R")
 source("../src/plotting.R")
 @
