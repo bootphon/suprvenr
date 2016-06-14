@@ -1,0 +1,16 @@
+Package: supervenr
+Title: 
+Version: 0.1
+Authors@R: person("Ewan", "Dunbar", , "emd@umd.edu", role = c("aut", "cre"))
+Description: Test how well representations instantiate abstract properties
+Depends:
+    R (>= 3.1.1)
+Imports:
+    foreach,
+    doParallel,
+    dplyr,
+    purrr,
+    rocauc
+License: GPL-2
+LazyData: true
+RoxygenNote: 5.0.1
