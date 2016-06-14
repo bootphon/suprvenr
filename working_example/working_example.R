@@ -5,12 +5,12 @@ library(tidyr)
 library(dplyr)
 library(purrr)
 
-encodings <- readr::read_csv("scripts/encodings_cognition_brief.csv")
-test_pairs <- readr::read_csv("scripts/test_pairs.csv")
+encodings <- readr::read_csv("working_example/encodings.csv")
+test_pairs <- readr::read_csv("working_example/test_pairs.csv")
 encodings <- encodings %>%
   mutate(encoding_value=purrr::map(
     filename,
-    ~ encoding(readr::read_csv(.), transformation=supervenr::whiten_pca, k=3)
+    ~ encoding(readr::read_csv(.), transformation=supervenr::zscore)
     ))
 mptests <- encodings %>%
   transmute(encoding_name=encoding_name,
@@ -24,3 +24,10 @@ mptests_h0 <- mptests %>%
 mptests_summ <- mptests %>% unnest() %>% select(encoding_name, fname, auc)
 mptests_h0_summ <- mptests_h0 %>% unnest() %>% select(encoding_name, fname, auc_real, pval)
 
+p <- ggplot(mptests_h0_summ, aes(fill=encoding_name, x=fname, y=pval)) +
+  geom_bar(stat="identity", position="dodge",colour="black") +
+  geom_hline(yintercept=0.05) +
+  ggtitle("z-scored, no dimensionality reduction") +
+  scale_fill_manual(values=emdplot::emd_palette(mptests_h0_summ$encoding_name)) +
+  emdplot::emd_theme()
+print(p)
