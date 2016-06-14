@@ -47,3 +47,14 @@ whiten_zca <- function(m, k=NULL) {
   p <- prcomp(m, scale=T)
   return(reduce_to(scale(p$x) %*% t(p$rotation), k))
 }
+
+#' Apply z-score transform
+#' @description Centers and divides out the variance from \code{m}
+#' @param m A matrix
+#' @param k Fixed number of dimensions to return; defaults to
+#' no dimensionality reduction if \code{k} is \code{NULL}
+#' @return z-scored \code{m}
+#' @export
+zscore <- function(m, k=NULL) {
+  return(reduce_to(scale(m), k))
+}
