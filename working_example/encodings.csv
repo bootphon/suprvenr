@@ -1,0 +1,4 @@
+encoding_name,filename
+Acoustic + Articulatory,data/english_acoustic+artic.csv
+Acoustic,data/english_timit_filterbank_means.csv
+Articulatory,data/english_artic_jm_means.csv
