@@ -21,12 +21,24 @@ encode_pairs <- function(test_pairs, encoding) {
                  encoding$fnames))
 }
 
-compare_encoded_pairs <- function(encoding, similarity) {
+compare_encoded_pairs <- function(encoding, similarity, similarity_param=NULL) {
   doParallel::registerDoParallel()
   row_pairs <- combn(nrow(encoding$m), 2)
-  s <- foreach::foreach(row_1=row_pairs[1,], row_2=row_pairs[2,],
-               .combine=c) %dopar%
-       similarity(encoding$m[row_1,,drop=F], encoding$m[row_2,,drop=F])
+  if (is.null(similarity_param)) {
+    s <- foreach::foreach(row_1=row_pairs[1,], row_2=row_pairs[2,],
+                .combine=c) %dopar%
+        similarity(encoding$m[row_1,,drop=F], encoding$m[row_2,,drop=F])   
+  } else if (length(similarity_param) == nrow(encoding$m)) {
+    s <- foreach::foreach(row_1=row_pairs[1,], row_2=row_pairs[2,],
+                .combine=c) %dopar%
+        similarity(encoding$m[row_1,,drop=F], encoding$m[row_2,,drop=F],
+                   similarity_param[c(row_1,row_2)])
+  } else {
+     s <- foreach::foreach(row_1=row_pairs[1,], row_2=row_pairs[2,],
+                  .combine=c) %dopar%
+          similarity(encoding$m[row_1,,drop=F], encoding$m[row_2,,drop=F],
+                     similarity_param)    
+  }
   labels1 <- encoding$label[row_pairs[1,]]
   labels2 <- encoding$label[row_pairs[2,]]
   result <- dplyr::data_frame(pair=pair_labels(labels1, labels2), similarity=s)
@@ -85,9 +97,9 @@ fname_test_pairs <- function(test_pairs) {
 #'  \itemize{"auc"}{AUC (integral under \code{roc$tpr ~ roc$fpr})}
 #' }
 #' @export
-joint_mptests <- function(encoding, test_pairs, similarity) {
+joint_mptests <- function(encoding, test_pairs, similarity, similarity_param=NULL) {
   pairs <- encode_pairs(test_pairs, encoding)
-  pairs_xy <- compare_encoded_pairs(pairs, similarity) %>%
+  pairs_xy <- compare_encoded_pairs(pairs, similarity, similarity_param) %>%
               dplyr::left_join(compare_test_pairs(test_pairs)) %>%
               dplyr::left_join(fname_test_pairs(test_pairs))
   result <- dplyr::data_frame(fname=unique((test_pairs %>% dplyr::filter(!is.na(fname)))[["fname"]]))

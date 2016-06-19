@@ -58,3 +58,16 @@ whiten_zca <- function(m, k=NULL) {
 zscore <- function(m, k=NULL) {
   return(reduce_to(scale(m), k))
 }
+
+#' Center
+#' @description Centers \code{m}
+#' @param m A matrix
+#' @param k Fixed number of dimensions to return; defaults to
+#' no dimensionality reduction if \code{k} is \code{NULL}
+#' @return Centered \code{m}
+#' @export
+center <- function(m, k=NULL) {
+  col_means <- colMeans(m)
+  result <- sweep(m, 2, col_means)
+  return(reduce_to(result, k))
+}

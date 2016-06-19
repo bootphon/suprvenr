@@ -4,7 +4,7 @@
 \alias{joint_mptests}
 \title{Conduct minimal pair tests}
 \usage{
-joint_mptests(encoding, test_pairs, similarity)
+joint_mptests(encoding, test_pairs, similarity, similarity_param = NULL)
 }
 \arguments{
 \item{encoding}{an \code{\link{encoding}} object}

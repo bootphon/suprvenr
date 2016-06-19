@@ -1,4 +1,17 @@
 #'@export
+cosabscossim <- function(x, y, labels) {
+  x <- as.numeric(x)
+  y <- as.numeric(y)
+  dot <- x %*% y
+  z <- norm(x,type="2")*norm(y,type="2")
+  if (!is.na(labels[1]) & !is.na(labels[2]) & (labels[1] == labels[2])) {
+    return(dot/z)
+  } else {
+    return(abs(dot/z))
+  }
+}
+
+#'@export
 cossim <- function(x, y) {
   x <- as.numeric(x)
   y <- as.numeric(y)
@@ -6,7 +19,6 @@ cossim <- function(x, y) {
   z <- norm(x,type="2")*norm(y,type="2")
   return(dot/z)
 }
-
 
 cos2sim <- function(x, y) {
   x <- as.numeric(x)

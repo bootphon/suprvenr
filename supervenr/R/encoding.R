@@ -11,6 +11,7 @@
 encoding.matrix <- function(m, label, fnames, transformation=NULL, ...) {
   if (!is.null(transformation)) {
     m <- transformation(m, ...)
+    fnames <- colnames(m)
   }
   result <- list(m=m, label=label, fnames=fnames)
   class(result) <- "encoding"
@@ -65,4 +66,17 @@ encoding.tbl <- function(d, transformation=NULL, ...) {
 #'@export
 encoding <- function(...) {
   UseMethod("encoding")
+}
+
+#' Get encoding corresponding to a label
+#' @param e An \code{\link{encoding}}
+#' @param label A character string containing a label
+#' @return All the rows of the encoding matrix that have \code{label} as their
+#' label (extra dimensions will be dropped to make it a vector if there is only one row)
+#' @export
+get.encoding <- function(e, label) {
+  if (!(label %in% e$label)) {
+    stop(paste0("No such label: ", label))
+  }
+  return (e$m[e$label==label,])
 }
