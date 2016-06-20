@@ -4,8 +4,8 @@ library(tidyr)
 library(dplyr)
 library(purrr)
 
-encodings <- readr::read_csv("working_example/encodings.csv")
-test_pairs <- readr::read_csv("working_example/test_pairs.csv")
+encodings <- readr::read_csv("encodings.csv")
+test_pairs <- readr::read_csv("test_pairs.csv")
 encodings <- encodings %>%
   mutate(encoding_value=purrr::map(
     filename,
