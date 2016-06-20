@@ -14,6 +14,6 @@ LaTeX: XeLaTeX
 
 BuildType: Package
 PackageUseDevtools: Yes
-PackagePath: supervenr
+PackagePath: suprvenr
 PackageInstallArgs: --no-multiarch --with-keep.source
 PackageRoxygenize: rd,namespace,vignette

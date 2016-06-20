@@ -2,6 +2,7 @@
 % Please edit documentation in R/mptest.R
 \name{pair_labels}
 \alias{pair_labels}
+\title{Label pairs}
 \usage{
 pair_labels(lab1, lab2, collapse_main = "::", collapse_sub = "_")
 }
@@ -17,5 +18,8 @@ in lab1 or lab2 already}
 }
 \value{
 A character vector containing labels for the pairs
+}
+\description{
+Label pairs
 }
 

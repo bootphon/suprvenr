@@ -1,5 +1,6 @@
 #' @importFrom foreach %dopar%
 #' @importFrom dplyr %>%
+NULL
 
 #'Label pairs
 #'@param lab1 Labels of left elements
