@@ -1,4 +1,4 @@
-library(supervenr)
+library(suprvenr)
 library(readr)
 library(tidyr)
 library(dplyr)

@@ -1,6 +1,14 @@
 #' @importFrom foreach %dopar%
 #' @importFrom dplyr %>%
 
+#'Label pairs
+#'@param lab1 Labels of left elements
+#'@param lab2 Labels of right elements
+#'@param collapse_main Separating string
+#'@param collapse_sub String to replace \code{collapse_main} with if it appears
+#'in lab1 or lab2 already
+#'@return A character vector containing labels for the pairs
+#'@export
 pair_labels <- function(lab1, lab2, collapse_main="::", collapse_sub="_") {
   lab1 <- sub(collapse_main, collapse_sub, lab1)
   lab2 <- sub(collapse_main, collapse_sub, lab2)
