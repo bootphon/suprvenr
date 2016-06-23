@@ -10,7 +10,7 @@ whiten_pca(m, k = NULL)
 \item{m}{A matrix}
 
 \item{k}{Fixed number of dimensions (principal components) to return; defaults to
-no dimensionality reduction if \code{k} is \code{NULL} - reducing by variance explained is not supported}
+no dimensionality reduction if \code{k} is \code{NULL}}
 }
 \value{
 m whitened by PCA-rotation and z-scoring

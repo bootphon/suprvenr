@@ -8,7 +8,7 @@
 reduce_to <- function(m, k=NULL) {
   if (!is.null(k)) {
     dims <- min(k, ncol(m))
-    m <- m[,1:dims]
+    m <- m[,1:dims,drop=F]
   }    
   return(m)
 }
@@ -24,15 +24,26 @@ pca <- function(m, k=NULL) {
   return(reduce_to(prcomp(m, scale=T)$x, k))
 }
 
+#' Apply z-score transform
+#' @description Centers and divides out the variance from \code{m}
+#' @param m A matrix
+#' @param k Fixed number of dimensions to return; defaults to
+#' no dimensionality reduction if \code{k} is \code{NULL}
+#' @return z-scored \code{m}
+#' @export
+zscore <- function(m, k=NULL) {
+  return(reduce_to(scale(m)[,,drop=F], k))
+}
+
 #' Apply whitening PCA transform
 #' @description Applies PCA and reduces to \code{k} dimensions, then divides out the variance
 #' @param m A matrix
 #' @param k Fixed number of dimensions (principal components) to return; defaults to
-#' no dimensionality reduction if \code{k} is \code{NULL} - reducing by variance explained is not supported 
+#' no dimensionality reduction if \code{k} is \code{NULL}
 #' @return m whitened by PCA-rotation and z-scoring
 #' @export
 whiten_pca <- function(m, k=NULL) {
-  return(scale(reduce_to(prcomp(m, scale=T)$x, k))[,])
+  return(zscore(prcomp(m, scale=T)$x, k))
 }
 
 #' Apply ZCA transform
@@ -46,17 +57,6 @@ whiten_pca <- function(m, k=NULL) {
 whiten_zca <- function(m, k=NULL) {
   p <- prcomp(m, scale=T)
   return(reduce_to(scale(p$x) %*% t(p$rotation), k))
-}
-
-#' Apply z-score transform
-#' @description Centers and divides out the variance from \code{m}
-#' @param m A matrix
-#' @param k Fixed number of dimensions to return; defaults to
-#' no dimensionality reduction if \code{k} is \code{NULL}
-#' @return z-scored \code{m}
-#' @export
-zscore <- function(m, k=NULL) {
-  return(reduce_to(scale(m), k))
 }
 
 #' Center

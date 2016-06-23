@@ -1,3 +1,6 @@
+#' @importFrom dplyr %>%
+NULL
+
 #'Create \code{encoding} object
 #'@description Create \code{encoding} object from a matrix
 #'with \code{label} corresponding \code{label}, \code{m}
@@ -6,6 +9,7 @@
 #'@param label a string vector
 #'@param fname a string vector
 #'@param transformation a transformation that will be applied to \code{m}
+#'@param ... Additional arguments to \code{transformation}
 #'@return See \code{\link{encoding}}
 #'@export
 encoding.matrix <- function(m, label, fnames, transformation=NULL, ...) {
@@ -25,6 +29,7 @@ encoding.matrix <- function(m, label, fnames, transformation=NULL, ...) {
 #'names of the remaining columns
 #'@param d a \code{\link{data.frame}}
 #'@param transformation a transformation that will be applied to \code{m}
+#'@param ... Additional arguments to \code{transformation}
 #'@return See \code{\link{encoding}}
 #'@export
 encoding.data.frame <- function(d, transformation=NULL, ...) {
@@ -45,6 +50,7 @@ encoding.data.frame <- function(d, transformation=NULL, ...) {
 #'names of the remaining columns
 #'@param d a \code{\link{dplyr::tbl}}
 #'@param transformation a transformation that will be applied to \code{m}
+#'@param ... Additional arguments to \code{transformation}
 #'@return See \code{\link{encoding}}
 #'@export
 encoding.tbl <- function(d, transformation=NULL, ...) {
@@ -68,15 +74,27 @@ encoding <- function(...) {
   UseMethod("encoding")
 }
 
-#' Get encoding corresponding to a label
+#' Convert encoding to a \code{\link{dplyr::tbl}}
 #' @param e An \code{\link{encoding}}
-#' @param label A character string containing a label
-#' @return All the rows of the encoding matrix that have \code{label} as their
-#' label (extra dimensions will be dropped to make it a vector if there is only one row)
+#' @return A \code{\link{dplyr::tbl}} containing all the rows of the encoding
+#' matrix with an additional column called \code{label} that
+#' contains the corresponding labels for those rows
 #' @export
-get.encoding <- function(e, label) {
-  if (!(label %in% e$label)) {
-    stop(paste0("No such label: ", label))
-  }
-  return (e$m[e$label==label,])
+as.tbl.encoding <- function(e) {
+  result <- dplyr::tbl_df(data.frame(e$m))
+  colnames(result) <- e$fnames
+  result$label <- e$label
+  return(result)
+}
+
+#' Get encoding corresponding to a set of labels
+#' @param e An \code{\link{encoding}}
+#' @param labels A character string containing a set of labels
+#' @return A \code{\link{dplyr::tbl}} containing all the rows of the encoding
+#' matrix that have a
+#' label in \code{labels}, with an additional column called \code{label} that
+#' contains the corresponding labels for those rows
+#' @export
+get.encoding <- function(e, labels) {
+  return(as.tbl(e) %>% dplyr::filter(label %in% labels))
 }

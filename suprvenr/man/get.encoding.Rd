@@ -2,20 +2,22 @@
 % Please edit documentation in R/encoding.R
 \name{get.encoding}
 \alias{get.encoding}
-\title{Get encoding corresponding to a label}
+\title{Get encoding corresponding to a set of labels}
 \usage{
-get.encoding(e, label)
+get.encoding(e, labels)
 }
 \arguments{
 \item{e}{An \code{\link{encoding}}}
 
-\item{label}{A character string containing a label}
+\item{labels}{A character string containing a set of labels}
 }
 \value{
-All the rows of the encoding matrix that have \code{label} as their
-label (extra dimensions will be dropped to make it a vector if there is only one row)
+A \code{\link{dplyr::tbl}} containing all the rows of the encoding
+matrix that have a
+label in \code{labels}, with an additional column called \code{label} that
+contains the corresponding labels for those rows
 }
 \description{
-Get encoding corresponding to a label
+Get encoding corresponding to a set of labels
 }
 

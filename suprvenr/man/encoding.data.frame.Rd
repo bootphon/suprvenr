@@ -10,6 +10,8 @@
 \item{d}{a \code{\link{data.frame}}}
 
 \item{transformation}{a transformation that will be applied to \code{m}}
+
+\item{...}{Additional arguments to \code{transformation}}
 }
 \value{
 See \code{\link{encoding}}

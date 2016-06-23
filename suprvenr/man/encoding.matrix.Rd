@@ -13,6 +13,8 @@
 
 \item{transformation}{a transformation that will be applied to \code{m}}
 
+\item{...}{Additional arguments to \code{transformation}}
+
 \item{fname}{a string vector}
 }
 \value{
