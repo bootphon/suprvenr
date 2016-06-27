@@ -6,4 +6,4 @@ ICPhS](http://ewan.website/ICPhS2015_Feature_Explorations.pdf).
 
     library(devtools)
     install_github("ewan/rocauc", subdir="rocauc") # Dependency
-    install_github("bootphon/suprvenr", subdir="supervenr")
+    install_github("bootphon/suprvenr", subdir="suprvenr")
