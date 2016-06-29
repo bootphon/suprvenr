@@ -9,8 +9,10 @@ whiten_zca(m, k = NULL)
 \arguments{
 \item{m}{A matrix}
 
-\item{k}{Fixed number of dimensions (principal components) to return; defaults to
-no dimensionality reduction if \code{k} is \code{NULL} - reducing by variance explained is not supported}
+\item{k}{Fixed number of dimensions (principal components) to return}
+
+\item{prop_var}{Select dimension by proportion of explained variance (need to explain
+at least \code{prop_var}); overrides \code{k} if set}
 }
 \value{
 m whitened by PCA-rotation and z-scoring, and then re-rotated back to its original dimensions

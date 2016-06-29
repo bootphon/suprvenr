@@ -4,13 +4,15 @@
 \alias{pca}
 \title{Apply PCA transform}
 \usage{
-pca(m, k = NULL)
+pca(m, k = NULL, prop_var = NULL)
 }
 \arguments{
 \item{m}{A matrix}
 
-\item{k}{Fixed number of dimensions (principal components) to return; defaults to
-no dimensionality reduction if \code{k} is \code{NULL} - reducing by variance explained is not supported}
+\item{k}{Fixed number of dimensions (principal components) to return}
+
+\item{prop_var}{Select dimension by proportion of explained variance (need to explain
+at least \code{prop_var}); overrides \code{k} if set}
 }
 \value{
 m decorrelated by PCA-rotation

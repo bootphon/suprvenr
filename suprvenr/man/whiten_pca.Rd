@@ -4,13 +4,15 @@
 \alias{whiten_pca}
 \title{Apply whitening PCA transform}
 \usage{
-whiten_pca(m, k = NULL)
+whiten_pca(m, k = NULL, prop_var = NULL)
 }
 \arguments{
 \item{m}{A matrix}
 
-\item{k}{Fixed number of dimensions (principal components) to return; defaults to
-no dimensionality reduction if \code{k} is \code{NULL}}
+\item{k}{Fixed number of dimensions (principal components) to return}
+
+\item{prop_var}{Select dimension by proportion of explained variance (need to explain
+at least \code{prop_var}); overrides \code{k} if set}
 }
 \value{
 m whitened by PCA-rotation and z-scoring
