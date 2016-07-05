@@ -57,9 +57,9 @@ encoding.tbl <- function(d, transformation=NULL, ...) {
   if (!("label" %in% colnames(d))) {
     stop("label column not found in d")
   }
-  return(encoding.matrix(as.matrix(select(d, -label)),
+  return(encoding.matrix(as.matrix(dplyr::select(d, -label)),
                          as.character(d[["label"]]),
-                         colnames(select(d, -label)),
+                         colnames(dplyr::select(d, -label)),
                          transformation, ...))
 }
 
