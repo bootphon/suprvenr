@@ -17,6 +17,7 @@ pair_labels <- function(lab1, lab2, collapse_main="::", collapse_sub="_") {
   return(result)
 }
 
+#'@export
 encode_pairs <- function(test_pairs, encoding) {
  doParallel::registerDoParallel() 
  test_elems <- unique(c(test_pairs$x1, test_pairs$x2)) 
@@ -30,6 +31,7 @@ encode_pairs <- function(test_pairs, encoding) {
                  encoding$fnames))
 }
 
+#'@export
 compare_encoded_pairs <- function(encoding, similarity, similarity_param=NULL) {
   doParallel::registerDoParallel()
   row_pairs <- combn(nrow(encoding$m), 2)
@@ -109,10 +111,16 @@ fname_test_pairs <- function(test_pairs) {
 joint_mptests <- function(encoding, test_pairs, similarity, similarity_param=NULL) {
   pairs <- encode_pairs(test_pairs, encoding)
   pairs_xy <- compare_encoded_pairs(pairs, similarity, similarity_param) %>%
-              dplyr::left_join(compare_test_pairs(test_pairs)) %>%
-              dplyr::left_join(fname_test_pairs(test_pairs))
+    dplyr::left_join(compare_test_pairs(test_pairs)) %>%
+    dplyr::left_join(fname_test_pairs(test_pairs)) %>%
+    dplyr::mutate(direction="Default")
+  negative_different_pairs <- pairs_xy %>%
+    dplyr::filter(same_different == "Different") %>%
+    dplyr::mutate(similarity=-similarity, direction="Reverse")
+  pairs_all <- pairs_xy %>%
+    dplyr::bind_rows(negative_different_pairs)
   result <- dplyr::data_frame(fname=unique((test_pairs %>% dplyr::filter(!is.na(fname)))[["fname"]]))
-  result <- result %>% dplyr::mutate(data=purrr::map(fname, ~ dplyr::filter(pairs_xy, fname1==. | fname2==.)))
+  result <- result %>% dplyr::mutate(data=purrr::map(fname, ~ dplyr::filter(pairs_all, fname1==. | fname2==.)))
   result <- result %>% dplyr::mutate(roc=purrr::map(data, ~ rocauc::pred_stats(.$similarity, factor(.$same_different))))
   result <- result %>% dplyr::mutate(auc=purrr::map_dbl(roc, ~ rocauc::auc(.$tpr, .$fpr)))
   return(result) 
@@ -138,6 +146,6 @@ hyp_nodiff_joint_mptests <- function(mptests, nreps) {
   result <- mptests %>% dplyr::transmute(fname=fname,
                                          auc_real=auc,
                                          hyp_nodiff_mptest=purrr::map(data, ~ hyp_nodiff_mptest(., nreps))) %>%
-                        dplyr::mutate(pval=purrr::map2_dbl(auc_real, hyp_nodiff_mptest, ~ mean(.x < .y$auc)))
+                        dplyr::mutate(pval=purrr::map2_dbl(auc_real, hyp_nodiff_mptest, ~ mean(abs(.x-0.5) < abs(.y$auc-0.5))))
   return(result)
 }
