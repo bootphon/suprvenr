@@ -132,7 +132,7 @@ hyp_nodiff_mptest <- function(mptest_data, nreps) {
   unlabeled_data <- dplyr::select(mptest_data, pair, similarity)
   same_diff_orig <- factor(mptest_data$same_different)
   iter_names <- paste0("Iter", 1:nreps)
-  result <- foreach::foreach(iter=iter_names, .final=dplyr::bind_rows) %dopar%  {
+  result <- foreach::foreach(iter=iter_names, .final=dplyr::bind_rows) %dopar% {
       d_shuf <- sample_n(unlabeled_data, nrow(unlabeled_data))
       roc <- rocauc::pred_stats(d_shuf$similarity, same_diff_orig)
       auc <- rocauc::auc(roc$tpr, roc$fpr)
