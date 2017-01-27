@@ -11,7 +11,7 @@ generic_test(encoding, test_classes_f, fit_and_predict_fn)
 
 \item{fit_and_predict_fn}{a function of three arguments: \code{x_tr}
 (an N by d array of training vectors), \code{y_tr} (a vector of training labels),
-\code{x_te} (a matrix or vector containing a point to classify), returning a
+\code{x_te} (an array containing a point to classify), returning a
 predicted label.}
 
 \item{test_classes}{a data frame specifying the two classes: it contains a column

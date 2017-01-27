@@ -11,7 +11,7 @@ NULL
 #' and a column \code{value} giving the classification label
 #' @param fit_and_predict_fn a function of three arguments: \code{x_tr}
 #' (an N by d array of training vectors), \code{y_tr} (a vector of training labels),
-#' \code{x_te} (a matrix or vector containing a point to classify), returning a
+#' \code{x_te} (an array containing a point to classify), returning a
 #' predicted label.
 #' @return a \code{\link{dplyr::tbl}} containing classification scores,
 #' having at least one column,  \code{avg_loo}, giving the average
