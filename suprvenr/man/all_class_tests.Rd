@@ -2,7 +2,7 @@
 % Please edit documentation in R/class_test.R
 \name{all_class_tests}
 \alias{all_class_tests}
-\title{Conduct class tests}
+\title{Conduct class tests for several features}
 \usage{
 all_class_tests(encoding, test_classes, class_test_fn)
 }
