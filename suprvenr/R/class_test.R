@@ -1,5 +1,6 @@
 #' @importFrom dplyr %>%
 #' @importFrom foreach %dopar%
+#' @importFrom doParallel registerDoParallel
 NULL
 
 #' Conduct a class test
