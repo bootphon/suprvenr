@@ -1,5 +1,6 @@
 #' @importFrom dplyr %>%
 #' @importFrom foreach %dopar%
+#' @importFrom foreach foreach
 #' @importFrom doParallel registerDoParallel
 NULL
 
