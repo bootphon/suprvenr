@@ -1,7 +1,6 @@
 #' @importFrom dplyr %>%
 #' @importFrom foreach %dopar%
 #' @importFrom foreach foreach
-#' @importFrom doParallel registerDoParallel
 NULL
 
 #' Conduct a class test
@@ -20,7 +19,7 @@ NULL
 #' leave-one-out classification score
 #' @export
 generic_test <- function(encoding, test_classes_f, fit_and_predict_fn) {
-  registerDoParallel()
+  doParallel::registerDoParallel()
   d <- inner_join(as.tbl(encoding), test_classes_f, by="label")
   d$y <- factor(d$value)
   pred <- foreach(i=1:nrow(d), .combine=c) %dopar%
