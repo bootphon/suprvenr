@@ -18,17 +18,28 @@ NULL
 #' having at least one column,  \code{avg_loo}, giving the average
 #' leave-one-out classification score
 #' @export
-generic_test <- function(encoding, test_classes_f, fit_and_predict_fn) {
-  doParallel::registerDoParallel()
+generic_test <- function(encoding, test_classes_f, fit_and_predict_fn,
+                         parallel=T) {
   d <- inner_join(as.tbl(encoding), test_classes_f, by="label")
   d$y <- factor(d$value)
-  pred <- foreach(i=1:nrow(d), .combine=c) %dopar%
-    (function(j) {
-      x_tr <- d[-j,names(d) %in% encoding$fnames]
-      y_tr <- d[-j,]$y
-      x_te <- d[j,names(d) %in% encoding$fnames]
-      return(fit_and_predict_fn(x_tr, y_tr, x_te))
-    })(i)
+  if (parallel) {
+    doParallel::registerDoParallel()
+    pred <- foreach(i=1:nrow(d), .combine=c) %dopar%
+      (function(j) {
+        x_tr <- d[-j,names(d) %in% encoding$fnames]
+        y_tr <- d[-j,]$y
+        x_te <- d[j,names(d) %in% encoding$fnames]
+        return(fit_and_predict_fn(x_tr, y_tr, x_te))
+      })(i)
+  } else {
+    pred <- rep("", nrow(d))
+    for (i in 1:nrow(d)) {
+      x_tr <- d[-i,names(d) %in% encoding$fnames]
+      y_tr <- d[-i,]$y
+      x_te <- d[i,names(d) %in% encoding$fnames]
+      pred[i] <- fit_and_predict_fn(x_tr, y_tr, x_te)
+    }
+  }
   correct <- pred == as.character(d$y)
   result <- data_frame(avg_loo=mean(correct),
                        predictions=list(data_frame(label=d$label,
