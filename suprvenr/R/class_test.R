@@ -7,7 +7,7 @@ NULL
 #' @description Conducts a class separation test on a single feature as defined in
 #' \code{test_classes_f} 
 #' @param encoding an \code{\link{encoding}} object
-#' @param test_classes a data frame specifying the two classes: it contains a column
+#' @param test_classes_f a data frame specifying the two classes: it contains a column
 #' column \code{label} giving the label of the element,
 #' and a column \code{value} giving the classification label
 #' @param fit_and_predict_fn a function of three arguments: \code{x_tr}

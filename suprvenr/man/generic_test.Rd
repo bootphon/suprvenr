@@ -4,19 +4,19 @@
 \alias{generic_test}
 \title{Conduct a class test}
 \usage{
-generic_test(encoding, test_classes_f, fit_and_predict_fn)
+generic_test(encoding, test_classes_f, fit_and_predict_fn, parallel = T)
 }
 \arguments{
 \item{encoding}{an \code{\link{encoding}} object}
+
+\item{test_classes_f}{a data frame specifying the two classes: it contains a column
+column \code{label} giving the label of the element,
+and a column \code{value} giving the classification label}
 
 \item{fit_and_predict_fn}{a function of three arguments: \code{x_tr}
 (an N by d array of training vectors), \code{y_tr} (a vector of training labels),
 \code{x_te} (an array containing a point to classify), returning a
 predicted label.}
-
-\item{test_classes}{a data frame specifying the two classes: it contains a column
-column \code{label} giving the label of the element,
-and a column \code{value} giving the classification label}
 }
 \value{
 a \code{\link{dplyr::tbl}} containing classification scores,
