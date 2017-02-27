@@ -10,7 +10,8 @@ Imports:
     doParallel,
     dplyr,
     purrr,
-    rocauc
+    rocauc,
+    e1071
 License: GPL-2
 LazyData: true
 RoxygenNote: 5.0.1
