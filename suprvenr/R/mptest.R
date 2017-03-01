@@ -21,6 +21,10 @@ pair_labels <- function(lab1, lab2, collapse_main="::", collapse_sub="_") {
 encode_pairs <- function(test_pairs, encoding) {
  doParallel::registerDoParallel() 
  test_elems <- unique(c(test_pairs$x1, test_pairs$x2)) 
+ if (!identical(sort(test_elems),
+                sort(unique(encoding$label)))) {
+   warning("Missing labels in encoding: unexpected errors may occur\n")
+ }
  test_elem_rows <- sapply(test_elems, function(e) which(encoding$label==e))
  m_pair <- foreach::foreach(row_1=test_elem_rows[test_pairs$x1],
                    row_2=test_elem_rows[test_pairs$x2],
