@@ -80,8 +80,8 @@ generic_test <- function(encoding, test_classes_f, fit_and_predict_fn,
 #' @export
 all_class_tests <- function(encoding, test_classes, class_test_fn) {
   test_classes %>%
-    group_by(fname) %>%
-    do(class_test=class_test_fn(encoding, .)) %>%
-    ungroup() %>%
-    unnest(class_test)
+    dplyr::group_by(fname) %>%
+    dplyr::do(class_test=class_test_fn(encoding, .)) %>%
+    dplyr::ungroup() %>%
+    tidyr::unnest(class_test)
 }

@@ -9,6 +9,7 @@ Imports:
     foreach,
     doParallel,
     dplyr,
+    tidyr,
     purrr,
     rocauc,
     e1071
