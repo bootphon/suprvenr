@@ -43,7 +43,7 @@ loo_serial <- function(d, fit_and_predict_fn) {
 #' @export
 generic_test <- function(encoding, test_classes_f, fit_and_predict_fn,
                          parallel=T) {
-  d <- inner_join(as.tbl(encoding), test_classes_f, by="label")
+  d <- dplyr::inner_join(as.tbl(encoding), test_classes_f, by="label")
   d$y <- factor(d$value)
   if (parallel) {
     pred <- loo_parallel(d, fit_and_predict_fn)
