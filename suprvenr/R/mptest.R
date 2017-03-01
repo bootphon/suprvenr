@@ -22,7 +22,7 @@ encode_pairs <- function(test_pairs, encoding) {
  doParallel::registerDoParallel() 
  test_elems <- unique(c(test_pairs$x1, test_pairs$x2)) 
  if (!identical(sort(test_elems),
-                sort(unique(encoding$label)))) {
+                sort(intersect(test_elems, unique(encoding$label))))) {
    warning("Missing labels in encoding: unexpected errors may occur\n")
  }
  test_elem_rows <- sapply(test_elems, function(e) which(encoding$label==e))
