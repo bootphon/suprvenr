@@ -44,6 +44,10 @@ loo_serial <- function(d, fnames, fit_and_predict_fn) {
 generic_test <- function(encoding, test_classes_f, fit_and_predict_fn,
                          parallel=T) {
   d <- dplyr::inner_join(dplyr::as.tbl(encoding), test_classes_f, by="label")
+  if (!identical(sort(unique(test_classes_f$label)),
+                 sort(unique(d$label)))) {
+    warning("Missing labels in encoding: unexpected errors may occur")
+  }
   d$y <- factor(d$value)
   if (parallel) {
     pred <- loo_parallel(d, encoding$fnames, fit_and_predict_fn)
