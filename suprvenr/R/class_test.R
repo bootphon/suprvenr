@@ -3,13 +3,13 @@
 #' @importFrom foreach foreach
 NULL
 
-loo_parallel <- function(d, fit_and_predict_fn) {
+loo_parallel <- function(d, fnames, fit_and_predict_fn) {
   doParallel::registerDoParallel()
   pred <- foreach(i=1:nrow(d), .combine=c) %dopar%
     (function(j) {
-      x_tr <- d[-j,names(d) %in% encoding$fnames]
+      x_tr <- d[-j,names(d) %in% fnames]
       y_tr <- d[-j,]$y
-      x_te <- d[j,names(d) %in% encoding$fnames]
+      x_te <- d[j,names(d) %in% fnames]
       return(fit_and_predict_fn(x_tr, y_tr, x_te))
     })(i)  
   return(pred)
@@ -18,9 +18,9 @@ loo_parallel <- function(d, fit_and_predict_fn) {
 loo_serial <- function(d, fit_and_predict_fn) {
   pred <- rep("", nrow(d))
   for (i in 1:nrow(d)) {
-    x_tr <- d[-i,names(d) %in% encoding$fnames]
+    x_tr <- d[-i,names(d) %in% fnames]
     y_tr <- d[-i,]$y
-    x_te <- d[i,names(d) %in% encoding$fnames]
+    x_te <- d[i,names(d) %in% fnames]
     pred[i] <- fit_and_predict_fn(x_tr, y_tr, x_te)
   } 
 }
@@ -46,9 +46,9 @@ generic_test <- function(encoding, test_classes_f, fit_and_predict_fn,
   d <- dplyr::inner_join(dplyr::as.tbl(encoding), test_classes_f, by="label")
   d$y <- factor(d$value)
   if (parallel) {
-    pred <- loo_parallel(d, fit_and_predict_fn)
+    pred <- loo_parallel(d, encoding$fnames, fit_and_predict_fn)
   } else {
-    pred <- loo_serial(d, fit_and_predict_fn)
+    pred <- loo_serial(d, encoding$fnames, fit_and_predict_fn)
   }
   correct <- pred == as.character(d$y)
   result <- data_frame(avg_loo=mean(correct),
