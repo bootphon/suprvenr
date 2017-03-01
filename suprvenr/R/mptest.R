@@ -111,8 +111,8 @@ fname_test_pairs <- function(test_pairs) {
 joint_mptests <- function(encoding, test_pairs, similarity, similarity_param=NULL) {
   pairs <- encode_pairs(test_pairs, encoding)
   pairs_xy <- compare_encoded_pairs(pairs, similarity, similarity_param) %>%
-    dplyr::left_join(compare_test_pairs(test_pairs)) %>%
-    dplyr::left_join(fname_test_pairs(test_pairs)) %>%
+    dplyr::left_join(compare_test_pairs(test_pairs), by="pair") %>%
+    dplyr::left_join(fname_test_pairs(test_pairs), by="pair") %>%
     dplyr::mutate(direction="Default")
   negative_different_pairs <- pairs_xy %>%
     dplyr::filter(same_different == "Different") %>%
