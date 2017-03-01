@@ -51,8 +51,8 @@ generic_test <- function(encoding, test_classes_f, fit_and_predict_fn,
     pred <- loo_serial(d, encoding$fnames, fit_and_predict_fn)
   }
   correct <- pred == as.character(d$y)
-  result <- data_frame(avg_loo=mean(correct),
-                       predictions=list(data_frame(label=d$label,
+  result <- dplyr::data_frame(avg_loo=mean(correct),
+                       predictions=list(dplyr::data_frame(label=d$label,
                                                    y=d$y,
                                                    pred=pred,
                                                    correct=correct)))
