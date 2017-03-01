@@ -15,7 +15,7 @@ loo_parallel <- function(d, fnames, fit_and_predict_fn) {
   return(pred)
 }
 
-loo_serial <- function(d, fit_and_predict_fn) {
+loo_serial <- function(d, fnames, fit_and_predict_fn) {
   pred <- rep("", nrow(d))
   for (i in 1:nrow(d)) {
     x_tr <- d[-i,names(d) %in% fnames]
