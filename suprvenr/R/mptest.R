@@ -145,11 +145,16 @@ hyp_nodiff_mptest <- function(mptest_data, nreps) {
   return(result)
 }
 
+mean_plusone <- function(x) {
+  return((sum(x)+1)/length(x))
+}
+
 #' @export
 hyp_nodiff_joint_mptests <- function(mptests, nreps) {
   result <- mptests %>% dplyr::transmute(fname=fname,
                                          auc_real=auc,
                                          hyp_nodiff_mptest=purrr::map(data, ~ hyp_nodiff_mptest(., nreps))) %>%
-                        dplyr::mutate(pval=purrr::map2_dbl(auc_real, hyp_nodiff_mptest, ~ mean(abs(.x-0.5) < abs(.y$auc-0.5))))
+                        dplyr::mutate(pval=purrr::map2_dbl(auc_real, hyp_nodiff_mptest,
+                                                           ~ mean_plusone(abs(.x-0.5) < abs(.y$auc-0.5))))
   return(result)
 }
