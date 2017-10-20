@@ -146,7 +146,7 @@ hyp_nodiff_mptest <- function(mptest_data, nreps) {
 }
 
 mean_plusone <- function(x) {
-  return((sum(x)+1)/length(x))
+  return((sum(x)+1)/(length(x)+1))
 }
 
 #' @export
